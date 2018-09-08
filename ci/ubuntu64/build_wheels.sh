@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-cd /code/py-spy
-python3 setup.py bdist_wheel
+cd /code/p5-spy
+perl3 setup.py bdist_wheel

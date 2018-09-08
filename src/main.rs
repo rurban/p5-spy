@@ -23,9 +23,9 @@ extern crate winapi;
 
 
 mod binary_parser;
-mod python_bindings;
-mod python_interpreters;
-mod python_spy;
+mod perl_versions;
+mod perl_interpreters;
+mod perl_spy;
 mod stack_trace;
 mod console_viewer;
 mod flamegraph;
@@ -39,7 +39,7 @@ use std::time::Duration;
 use clap::{App, Arg};
 use failure::Error;
 
-use python_spy::PythonSpy;
+use perl_spy::PerlSpy;
 use stack_trace::StackTrace;
 use console_viewer::ConsoleViewer;
 
@@ -81,7 +81,7 @@ fn permission_denied(err: &Error) -> bool {
     })
 }
 
-fn sample_console(process: &PythonSpy,
+fn sample_console(process: &PerlSpy,
                   display: &str,
                   args: &clap::ArgMatches) -> Result<(), Error> {
     let rate = value_t!(args, "rate", u64)?;
@@ -114,7 +114,7 @@ fn sample_console(process: &PythonSpy,
 }
 
 
-fn sample_flame(process: &PythonSpy, filename: &str, args: &clap::ArgMatches) -> Result<(), Error> {
+fn sample_flame(process: &PerlSpy, filename: &str, args: &clap::ArgMatches) -> Result<(), Error> {
     let rate = value_t!(args, "rate", u64)?;
     let duration = value_t!(args, "duration", u64)?;
     let max_samples = duration * rate;
@@ -168,9 +168,9 @@ fn sample_flame(process: &PythonSpy, filename: &str, args: &clap::ArgMatches) ->
 }
 
 fn pyspy_main() -> Result<(), Error> {
-    let matches = App::new("py-spy")
+    let matches = App::new("p5-spy")
         .version("0.1.4")
-        .about("A sampling profiler for Python programs")
+        .about("A sampling profiler for Perl programs")
         .arg(Arg::with_name("function")
             .short("F")
             .long("function")
@@ -179,9 +179,9 @@ fn pyspy_main() -> Result<(), Error> {
             .short("p")
             .long("pid")
             .value_name("pid")
-            .help("PID of a running python program to spy on")
+            .help("PID of a running perl program to spy on")
             .takes_value(true)
-            .required_unless("python_program"))
+            .required_unless("perl_program"))
         .arg(Arg::with_name("dump")
             .short("d")
             .long("dump")
@@ -207,8 +207,8 @@ fn pyspy_main() -> Result<(), Error> {
             .default_value("2")
             .takes_value(true))
 
-        .arg(Arg::with_name("python_program")
-            .help("commandline of a python program to run")
+        .arg(Arg::with_name("perl_program")
+            .help("commandline of a perl program to run")
             .multiple(true)
             )
         .get_matches();
@@ -227,7 +227,7 @@ fn pyspy_main() -> Result<(), Error> {
 
     if let Some(pid_str) = matches.value_of("pid") {
         let pid: read_process_memory::Pid = pid_str.parse().expect("invalid pid");
-        let process = PythonSpy::retry_new(pid, 3)?;
+        let process = PerlSpy::retry_new(pid, 3)?;
 
         if matches.occurrences_of("dump") > 0 {
             print_traces(&process.get_stack_traces()?, true);
@@ -238,7 +238,7 @@ fn pyspy_main() -> Result<(), Error> {
         }
     }
 
-    else if let Some(subprocess) = matches.values_of("python_program") {
+    else if let Some(subprocess) = matches.values_of("perl_program") {
         // Dump out stdout/stderr from the process to a temp file, so we can view it later if needed
         let mut process_output = tempfile::NamedTempFile::new()?;
         let subprocess: Vec<&str> = subprocess.collect();
@@ -254,7 +254,7 @@ fn pyspy_main() -> Result<(), Error> {
             // sleep just in case: https://jvns.ca/blog/2018/01/28/mac-freeze/
             std::thread::sleep(Duration::from_millis(50));
         }
-        let result = match PythonSpy::retry_new(command.id() as read_process_memory::Pid, 8) {
+        let result = match PerlSpy::retry_new(command.id() as read_process_memory::Pid, 8) {
             Ok(process) => {
                 if let Some(flame_file) = matches.value_of("flame") {
                     sample_flame(&process, flame_file, &matches)

@@ -1,10 +1,10 @@
 [package]
-name = "py-spy"
-version = "0.1.4"
-authors = ["Ben Frederickson <github@benfrederickson.com>"]
-repository = "https://github.com/benfred/py-spy"
-homepage = "https://github.com/benfred/py-spy"
-description = "Sampling profiler for Python programs "
+name = "p5-spy"
+version = "0.0.1"
+authors = ["Reini Urban <rurban@cpan.org>"]
+repository = "https://github.com/rurban/p5-spy"
+homepage = "https://github.com/rurban/p5-spy"
+description = "Sampling profiler for Perl programs "
 readme = "README.md"
 exclude = ["images/*", "test_programs/*"]
 license = "GPL-3.0"

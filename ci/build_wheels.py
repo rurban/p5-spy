@@ -14,13 +14,13 @@ log = logging.getLogger("build_wheels")
 
 
 def make_wheel_filename_generic(wheel):
-    """ Wheel filenames contain the python version and the python ABI version
-    for the wheel. https://www.python.org/dev/peps/pep-0427/#file-name-convention
+    """ Wheel filenames contain the perl version and the perl ABI version
+    for the wheel. https://www.perl.org/dev/peps/pep-0427/#file-name-convention
     Since we're distributing a rust binary this doesn't matter for us ... """
-    name, version, python, abi, platform = wheel.split("-")
+    name, version, perl, abi, platform = wheel.split("-")
 
-    # our binary handles multiple abi/versions of python
-    python, abi = "py2.py3", "none"
+    # our binary handles multiple abi/versions of perl
+    perl, abi = "py2.py3", "none"
 
     # hack, lets pretend to be manylinux1 so we can do a binary distribution
     if platform == "linux_x86_64.whl":
@@ -28,14 +28,14 @@ def make_wheel_filename_generic(wheel):
     elif platform == "linux_i686.whl":
         platform = "manylinux1_i686.whl"
 
-    return "-".join((name, version, python, abi, platform))
+    return "-".join((name, version, perl, abi, platform))
 
 
 def local_build_wheel():
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     ret = os.system("""
             cd %s
-            python3 setup.py bdist_wheel
+            perl3 setup.py bdist_wheel
     """ % path)
     print(ret)
     if ret:
@@ -49,7 +49,7 @@ def vagrant_build_wheel(vagrantfile):
     v.halt()
 
 
-def build_wheels(docker_image="rust_python3", build_local=True, vagrantfiles=None, clean=True):
+def build_wheels(docker_image="rust_perl3", build_local=True, vagrantfiles=None, clean=True):
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     dist = os.path.join(path, "dist")
     log.info("Generating wheels @'%s'", dist)
@@ -70,7 +70,7 @@ def build_wheels(docker_image="rust_python3", build_local=True, vagrantfiles=Non
     for vagrantfile in vagrantfiles or []:
         vagrant_build_wheel(vagrantfile)
 
-    # rename wheels to remove python version/abi tags
+    # rename wheels to remove perl version/abi tags
     for wheel in os.listdir(dist):
         filename = os.path.join(dist, wheel)
         if filename.endswith(".whl") and os.path.isfile(filename):

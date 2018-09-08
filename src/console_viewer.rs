@@ -25,7 +25,7 @@ pub struct ConsoleViewer {
 
 impl ConsoleViewer {
     pub fn new(show_linenumbers: bool,
-               python_command: &str,
+               perl_command: &str,
                version: &str,
                sampling_rate: f64) -> io::Result<ConsoleViewer> {
         let running = Arc::new(atomic::AtomicBool::new(true));
@@ -58,7 +58,7 @@ impl ConsoleViewer {
 
         Ok(ConsoleViewer{console_config: os_impl::ConsoleConfig::new()?,
                          version:version.to_owned(),
-                         command: python_command.to_owned(),
+                         command: perl_command.to_owned(),
                          show_idle: false, running, options, sampling_rate,
                          stats: Stats::new()})
     }
@@ -131,7 +131,7 @@ impl ConsoleViewer {
         self.console_config.reset_cursor()?;
 
         // Display aggregate stats about the process
-        out!("Collecting samples from '{}' (python v{})", style(&self.command).green(), &self.version);
+        out!("Collecting samples from '{}' (perl v{})", style(&self.command).green(), &self.version);
 
         let error_rate = self.stats.errors as f64 / self.stats.overall_samples as f64;
         if error_rate >= 0.01 && self.stats.overall_samples > 100 {
@@ -207,7 +207,7 @@ impl ConsoleViewer {
             out!("{:^12}{:<}", "R,r", "Reset statistics");
             out!("{:^12}{:<}", "X,x", "Exit this help screen");
             out!();
-            //println!("{:^12}{:<}", "Control-C", "Quit py-spy");
+            //println!("{:^12}{:<}", "Control-C", "Quit p5-spy");
         } else {
             out!("Press {} to quit, or {} for help.",
                  style("Control-C").bold().reverse(),

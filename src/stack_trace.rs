@@ -3,7 +3,7 @@ use std;
 use failure::{Error, ResultExt};
 use read_process_memory::{CopyAddress, copy_address};
 
-use python_interpreters::{InterpreterState, ThreadState, FrameObject, CodeObject, StringObject, BytesObject};
+use perl_interpreters::{InterpreterState, ThreadState, FrameObject, CodeObject, StringObject, BytesObject};
 use utils::{copy_pointer};
 
 #[derive(Debug)]
@@ -90,7 +90,7 @@ fn get_line_number<C: CodeObject, P: CopyAddress>(code: &C, lasti: i32, process:
     let table = copy_bytes(code.lnotab(), process).context("Failed to copy line number table")?;
 
     // unpack the line table. format is specified here:
-    // https://github.com/python/cpython/blob/master/Objects/lnotab_notes.txt
+    // https://github.com/perl/cperl/blob/master/Objects/lnotab_notes.txt
     let size = table.len();
     let mut i = 0;
     let mut line_number: i32 = code.first_lineno();
@@ -126,9 +126,9 @@ pub fn copy_string<T: StringObject, P: CopyAddress>(ptr: * const T, process: &P)
             Ok(chars.iter().collect())
         },
         (2, _) => {
-            // UCS2 strings aren't used internally after v3.3: https://www.python.org/dev/peps/pep-0393/
-            // TODO: however with python 2.7 they could be added with --enable-unicode=ucs2 configure flag.
-            //            or with python 3.2 --with-wide-unicode=ucs2
+            // UCS2 strings aren't used internally after v3.3: https://www.perl.org/dev/peps/pep-0393/
+            // TODO: however with perl 2.7 they could be added with --enable-unicode=ucs2 configure flag.
+            //            or with perl 3.2 --with-wide-unicode=ucs2
             Err(format_err!("ucs2 strings aren't supported yet!"))
         },
         (1, true) => Ok(String::from_utf8(bytes)?),
@@ -149,14 +149,14 @@ pub fn copy_bytes<T: BytesObject, P: CopyAddress>(ptr: * const T, process: &P) -
 
 #[cfg(test)]
 mod tests {
-    // the idea here is to create various cpython interpretator structs locally
+    // the idea here is to create various cperl interpretator structs locally
     // and then test out that the above code handles appropiately
     use super::*;
     use utils::tests::LocalProcess;
-    use python_bindings::v3_7_0::{PyCodeObject, PyBytesObject, PyVarObject, PyASCIIObject};
+    use perl_bindings::v3_7_0::{PyCodeObject, PyBytesObject, PyVarObject, PyASCIIObject};
     use std::ptr::copy_nonoverlapping;
 
-    // python stores data after pybytesobject/pyasciiobject. hack by initializing a 4k buffer for testing.
+    // perl stores data after pybytesobject/pyasciiobject. hack by initializing a 4k buffer for testing.
     // TODO: get better at Rust and figure out a better solution
     #[allow(dead_code)]
     struct AllocatedPyByteObject {
