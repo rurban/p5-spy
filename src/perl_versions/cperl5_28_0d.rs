@@ -4322,7 +4322,6 @@ pub struct regmatch_state {
     pub u: regmatch_state__bindgen_ty_1,
 }
 #[repr(C)]
-#[derive(Copy, Clone)]; 13usize ] , }#[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct regmatch_state__bindgen_ty_1__bindgen_ty_1 {
     pub prev_yes_state: *mut regmatch_state,
@@ -9334,7 +9333,7 @@ impl ::std::fmt::Debug for block_loop__bindgen_ty_1 {
     }
 }
 #[repr(C)]
-#[derive(Copy, Clone)]; 2usize ] , }#[repr(C)]
+
 #[derive(Debug, Copy, Clone)]
 pub struct block_loop__bindgen_ty_2__bindgen_ty_1 {
     pub ary: *mut AV,
@@ -9703,7 +9702,7 @@ pub struct block {
     pub blk_u: block__bindgen_ty_1,
 }
 #[repr(C)]
-#[derive(Copy, Clone)]; 6usize ] , }#[test]
+#[test]
 fn bindgen_test_layout_block__bindgen_ty_1() {
     assert_eq!(
         ::std::mem::size_of::<block__bindgen_ty_1>(),
@@ -10089,8 +10088,7 @@ fn bindgen_test_layout_subst() {
 pub struct context {
     pub cx_u: context__bindgen_ty_1,
 }
-#[repr(C)]
-#[derive(Copy, Clone)]; 12usize ] , }#[test]
+#[test]
 fn bindgen_test_layout_context__bindgen_ty_1() {
     assert_eq!(
         ::std::mem::size_of::<context__bindgen_ty_1>(),

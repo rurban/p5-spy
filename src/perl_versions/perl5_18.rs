@@ -8374,7 +8374,7 @@ impl ::std::fmt::Debug for block_loop__bindgen_ty_1 {
     }
 }
 #[repr(C)]
-#[derive(Copy, Clone)]; 2usize ] , }#[repr(C)]
+
 #[derive(Debug, Copy, Clone)]
 pub struct block_loop__bindgen_ty_2__bindgen_ty_1 {
     pub ary: *mut AV,

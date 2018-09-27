@@ -1441,7 +1441,7 @@ impl ::std::fmt::Debug for io {
     }
 }
 #[repr(C)]
-#[derive(Copy, Clone)]; 2usize ] , }#[repr(C)]
+
 #[derive(Debug, Copy, Clone)]
 pub struct _xnvu__bindgen_ty_1 {
     pub xlow: U32,

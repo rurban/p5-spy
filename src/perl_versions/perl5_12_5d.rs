@@ -7864,7 +7864,7 @@ pub struct block_loop {
     pub state_u: block_loop__bindgen_ty_1,
 }
 #[repr(C)]
-#[derive(Copy, Clone)]; 2usize ] , }#[repr(C)]
+
 #[derive(Debug, Copy, Clone)]
 pub struct block_loop__bindgen_ty_1__bindgen_ty_1 {
     pub ary: *mut AV,

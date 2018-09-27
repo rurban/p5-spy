@@ -1,18 +1,28 @@
 #!/bin/sh
 set -x
+test -e src/perl_versions/mod.rs && mv src/perl_versions/mod.rs src/perl_versions/mod.rs~
 for d in /usr/bin /usr/local/bin /opt/local/bin ~/bin ~/perl/bin
 do
-    for p in $d/perl $d/perl5.[0123][02468].* \
-             $d/cperl $d/cperl5.2[2468].*
+    for p in $d/perl $d/cperl \
+             $d/perl5.[0123][02468].0-thr \
+             $d/perl5.[0123][02468].0-nt \
+             $d/perl5.[0123][02468].0d \
+             $d/perl5.[0123][02468].0d-nt \
+             $d/cperl $d/cperl5.2[2468].0-thr \
+             $d/cperl $d/cperl5.2[2468].0-nt \
+             $d/cperl $d/cperl5.2[2468].0d \
+             $d/cperl $d/cperl5.2[2468].0d-nt;
     do
         if [ -e "$p" ]; then
             core=`$p -MConfig -e'print qq($Config{archlib}/CORE)'`
             name=`basename $p`
+            name=`echo $name|perl -pe 's/-/_/g; s/\.([0-9])/_\1/g'`
+            # TODO: only take the first major, skip any @
             if [ -d "$core" ]; then
-               # multi, thread or not
-               cat $core/{EXTERN,perl,XSUB}.h > src/versions/$name.h
-               bindgen src/versions/$name.h \
-                       -o src/versions/$name.rs \
+               # multi, threads or not
+               cat $core/{EXTERN,perl,XSUB}.h > src/perl_versions/$name.h
+               bindgen src/perl_versions/$name.h \
+                       -o src/perl_versions/$name.rs \
                        --impl-debug \
                        --rust-target 1.25 \
                        --ignore-functions \
@@ -28,8 +38,12 @@ do
                        --whitelist-type cv \
                        --whitelist-type gv \
                        -- -I$core
-               rustfmt --force --write-mode overwrite \
-                       src/versions/$name.rs
+               if [ -e src/perl_versions/$name.rs ]; then
+                   perl -pi -e 'print "#![allow(non_upper_case_globals)]\n#![allow(non_camel_case_types)]\n#![allow(non_snake_case)]\n" if $. == 1;' src/perl_versions/$name.rs
+                   perl -pi -e 's/^\Q#[derive(Copy, Clone)]; \E\d+\Qusize ] , }\E//' src/perl_versions/$name.rs
+                   rustfmt --force --write-mode overwrite src/perl_versions/$name.rs
+                   echo "pub mod $name;" >> src/perl_versions/mod.rs
+               fi
             fi
         fi
     done

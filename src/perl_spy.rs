@@ -6,7 +6,11 @@ use std::path::Path;
 use failure::{Error, ResultExt};
 use read_process_memory::{Pid, TryIntoProcessHandle, copy_address, ProcessHandle};
 use proc_maps::{get_process_maps, MapRange};
-use perl_bindings::{v2_7_15, v3_3_7, v3_5_5, v3_6_6, v3_7_0};
+use perl_versions::{cperl5_28_0d, cperl5_28_0_thr, cperl5_22_5d, perl5_26_2, perl5_10_1_nt};
+                    /*cperl5_26_2_nt, perl5_26_0_thr, perl5_22_0_nt, perl5_24_0_nt, perl5_26_0_nt, perl5_28_0_nt,
+                    perl5_16_0d, perl5_22_0d, perl5_26_0d, perl5_10_0d_nt, perl5_22_0d_nt,
+                    perl5_24_0d_nt, perl5_26_0d_nt, perl5_28_0d_nt, cperl5_28_0_thr, cperl5_28_0_nt,
+                    , cperl5_28_0d_nt*/
 
 use perl_interpreters;
 use stack_trace::{StackTrace, get_stack_traces};
@@ -106,15 +110,15 @@ impl PerlSpy {
         match self.version {
             // Currently 3.7.x and 3.8.0a0 have the same ABI, but this might change
             // as 3.8 evolvess
-            Version{major: 3, minor: 8, ..} => self._get_stack_traces::<v3_7_0::_is>(),
-            Version{major: 3, minor: 7, ..} => self._get_stack_traces::<v3_7_0::_is>(),
-            Version{major: 3, minor: 6, ..} => self._get_stack_traces::<v3_6_6::_is>(),
-            // ABI for 3.4 and 3.5 is the same for our purposes
-            Version{major: 3, minor: 5, ..} => self._get_stack_traces::<v3_5_5::_is>(),
-            Version{major: 3, minor: 4, ..} => self._get_stack_traces::<v3_5_5::_is>(),
-            Version{major: 3, minor: 3, ..} => self._get_stack_traces::<v3_3_7::_is>(),
+            //Version{major: 3, minor: 8, ..} => self._get_stack_traces::<v3_7_0::_is>(),
+            //Version{major: 3, minor: 7, ..} => self._get_stack_traces::<v3_7_0::_is>(),
+            //Version{major: 3, minor: 6, ..} => self._get_stack_traces::<v3_6_6::_is>(),
+            //// ABI for 3.4 and 3.5 is the same for our purposes
+            //Version{major: 3, minor: 5, ..} => self._get_stack_traces::<v3_5_5::_is>(),
+            //Version{major: 3, minor: 4, ..} => self._get_stack_traces::<v3_5_5::_is>(),
+            //Version{major: 3, minor: 3, ..} => self._get_stack_traces::<v3_3_7::_is>(),
             // ABI for 2.3/2.4/2.5/2.6/2.7 is also compatible
-            Version{major: 2, minor: 3...7, ..} => self._get_stack_traces::<v2_7_15::_is>(),
+            Version{major: 2, minor: 3...7, ..} => self._get_stack_traces::<cperl5_22_5d::interpreter>(),
             _ => Err(format_err!("Unsupported version of Perl: {}", self.version)),
         }
     }
@@ -262,13 +266,15 @@ fn get_interpreter_address_from_binary(binary: &BinaryInfo,
                                        version: &Version) -> Result<usize, Error> {
     // different versions have different layouts, check as appropiate
     match version {
-        Version{major: 3, minor: 8, ..} => check_addresses::<v3_7_0::_is>(binary, maps, process),
-        Version{major: 3, minor: 7, ..} => check_addresses::<v3_7_0::_is>(binary, maps, process),
-        Version{major: 3, minor: 6, ..} => check_addresses::<v3_6_6::_is>(binary, maps, process),
-        Version{major: 3, minor: 5, ..} => check_addresses::<v3_5_5::_is>(binary, maps, process),
-        Version{major: 3, minor: 4, ..} => check_addresses::<v3_5_5::_is>(binary, maps, process),
-        Version{major: 3, minor: 3, ..} => check_addresses::<v3_3_7::_is>(binary, maps, process),
-        Version{major: 2, minor: 3...7, ..} => check_addresses::<v2_7_15::_is>(binary, maps, process),
+        //Version{major: 3, minor: 8, ..} => check_addresses::<v3_7_0::_is>(binary, maps, process),
+        //Version{major: 3, minor: 7, ..} => check_addresses::<v3_7_0::_is>(binary, maps, process),
+        //Version{major: 3, minor: 6, ..} => check_addresses::<v3_6_6::_is>(binary, maps, process),
+        //Version{major: 3, minor: 5, ..} => check_addresses::<v3_5_5::_is>(binary, maps, process),
+        //Version{major: 3, minor: 4, ..} => check_addresses::<v3_5_5::_is>(binary, maps, process),
+        //Version{major: 3, minor: 3, ..} => check_addresses::<v3_3_7::_is>(binary, maps, process),
+        Version{major: 28, minor: 0...1, ..} => check_addresses::<cperl5_28_0d::interpreter>(binary, maps, process),
+        Version{major: 26, minor: 0...3, ..} => check_addresses::<perl5_26_2::interpreter>(binary, maps, process),
+        Version{major: 22, minor: 0...5, ..} => check_addresses::<cperl5_22_5d::interpreter>(binary, maps, process),
         _ => Err(format_err!("Unsupported version of Perl: {}", version))
     }
 }
