@@ -182,7 +182,8 @@ pub type uid_t = __darwin_uid_t;
 pub type time_t = __darwin_time_t;
 pub type sigjmp_buf = [::std::os::raw::c_int; 38usize];
 #[repr(C)]
-#[derive(Copy, Clone)]pub union sigval { pub sival_int : :: std :: os :: raw :: c_int , pub sival_ptr : * mut :: std :: os :: raw :: c_void , _bindgen_union_align : u64 , }#[test]
+#[derive(Copy, Clone)]
+#[test]
 fn bindgen_test_layout_sigval() {
     assert_eq!(
         ::std::mem::size_of::<sigval>(),
@@ -887,7 +888,8 @@ pub type I32 = ::std::os::raw::c_int;
 pub type U32 = ::std::os::raw::c_uint;
 pub type line_t = U32;
 #[repr(C)]
-#[derive(Copy, Clone)]pub union any { pub any_ptr : * mut :: std :: os :: raw :: c_void , pub any_sv : * mut SV , pub any_svp : * mut * mut SV , pub any_gv : * mut GV , pub any_av : * mut AV , pub any_hv : * mut HV , pub any_op : * mut OP , pub any_pv : * mut :: std :: os :: raw :: c_char , pub any_pvp : * mut * mut :: std :: os :: raw :: c_char , pub any_i32 : I32 , pub any_u32 : U32 , pub any_iv : IV , pub any_uv : UV , pub any_long : :: std :: os :: raw :: c_long , pub any_bool : bool , pub any_dptr : :: std :: option :: Option < unsafe extern "C" fn ( arg1 : * mut :: std :: os :: raw :: c_void ) > , pub any_dxptr : :: std :: option :: Option < unsafe extern "C" fn ( my_perl : * mut PerlInterpreter , arg1 : * mut :: std :: os :: raw :: c_void ) > , _bindgen_union_align : u64 , }#[test]
+#[derive(Copy, Clone)]
+#[test]
 fn bindgen_test_layout_any() {
     assert_eq!(
         ::std::mem::size_of::<any>(),
@@ -1094,7 +1096,8 @@ pub type Sighandler_t = ::std::option::Option<
                          arg3: *mut ::std::os::raw::c_void),
 >;
 #[repr(C)]
-#[derive(Copy, Clone)]pub union YYSTYPE { pub ival : I32 , pub pval : * mut :: std :: os :: raw :: c_char , pub opval : * mut OP , pub gvval : * mut GV , _bindgen_union_align : u64 , }#[test]
+#[derive(Copy, Clone)]
+#[test]
 fn bindgen_test_layout_YYSTYPE() {
     assert_eq!(
         ::std::mem::size_of::<YYSTYPE>(),
@@ -1163,7 +1166,8 @@ pub struct sv {
     pub sv_u: sv__bindgen_ty_1,
 }
 #[repr(C)]
-#[derive(Copy, Clone)]pub union sv__bindgen_ty_1 { pub svu_pv : * mut :: std :: os :: raw :: c_char , pub svu_iv : IV , pub svu_uv : UV , pub svu_nv : NV , pub svu_rv : * mut SV , pub svu_rx : * mut regexp , pub svu_array : * mut * mut SV , pub svu_hash : * mut * mut HE , pub svu_gp : * mut GP , pub svu_fp : * mut PerlIO , _bindgen_union_align : u64 , }#[test]
+#[derive(Copy, Clone)]
+#[test]
 fn bindgen_test_layout_sv__bindgen_ty_1() {
     assert_eq!(
         ::std::mem::size_of::<sv__bindgen_ty_1>(),
@@ -4348,7 +4352,6 @@ pub struct regmatch_state {
     pub u: regmatch_state__bindgen_ty_1,
 }
 #[repr(C)]
-#[derive(Copy, Clone)]; 13usize ] , }#[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct regmatch_state__bindgen_ty_1__bindgen_ty_1 {
     pub prev_yes_state: *mut regmatch_state,
@@ -9415,7 +9418,8 @@ pub struct block {
     pub blk_u: block__bindgen_ty_1,
 }
 #[repr(C)]
-#[derive(Copy, Clone)]; 6usize ] , }#[test]
+#[derive(Copy, Clone)];
+#[test]
 fn bindgen_test_layout_block__bindgen_ty_1() {
     assert_eq!(
         ::std::mem::size_of::<block__bindgen_ty_1>(),
@@ -9802,7 +9806,8 @@ pub struct context {
     pub cx_u: context__bindgen_ty_1,
 }
 #[repr(C)]
-#[derive(Copy, Clone)]; 12usize ] , }#[test]
+#[derive(Copy, Clone)]
+#[test]
 fn bindgen_test_layout_context__bindgen_ty_1() {
     assert_eq!(
         ::std::mem::size_of::<context__bindgen_ty_1>(),

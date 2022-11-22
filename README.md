@@ -1,6 +1,6 @@
 p5-spy: A sampling profiler for Perl programs.
 =====
-[![Build Status](https://travis-ci.org/rurban/p5-spy.svg?branch=master)](https://travis-ci.org/benfred/p5-spy)
+[![Build Status](https://travis-ci.org/rurban/p5-spy.svg?branch=master)](https://travis-ci.org/rurban/p5-spy)
 [![Windows Build status](https://ci.appveyor.com/api/projects/status/x0jwd5ygaybsa0md?svg=true)](https://ci.appveyor.com/project/rurban/p5-spy)
 
 p5-spy is a sampling profiler for Perl programs. It lets you visualize what your Perl

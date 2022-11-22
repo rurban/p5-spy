@@ -4322,8 +4322,7 @@ pub struct regmatch_state {
     pub u: regmatch_state__bindgen_ty_1,
 }
 #[repr(C)]
-#[derive(Copy, Clone)]; 13usize ] , }#[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Copy, Clone)]
 pub struct regmatch_state__bindgen_ty_1__bindgen_ty_1 {
     pub prev_yes_state: *mut regmatch_state,
 }
@@ -5961,7 +5960,9 @@ pub struct padlist {
     pub xpadl_outid: U32,
 }
 #[repr(C)]
-#[derive(Copy, Clone)]pub union padlist__bindgen_ty_1 { pub xpadlarr_alloc : * mut * mut PAD , pub xpadlarr_dbg : * mut padlist__bindgen_ty_1__bindgen_ty_1 , _bindgen_union_align : u64 , }#[repr(C)]
+#[derive(Copy, Clone)]
+pub union padlist__bindgen_ty_1 { pub xpadlarr_alloc : * mut * mut PAD , pub xpadlarr_dbg : * mut padlist__bindgen_ty_1__bindgen_ty_1 , _bindgen_union_align : u64 , }
+#[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct padlist__bindgen_ty_1__bindgen_ty_1 {
     pub padnl: *mut PADNAMELIST,
@@ -9703,7 +9704,8 @@ pub struct block {
     pub blk_u: block__bindgen_ty_1,
 }
 #[repr(C)]
-#[derive(Copy, Clone)]; 6usize ] , }#[test]
+#[derive(Copy, Clone)]
+#[test]
 fn bindgen_test_layout_block__bindgen_ty_1() {
     assert_eq!(
         ::std::mem::size_of::<block__bindgen_ty_1>(),
@@ -10090,7 +10092,8 @@ pub struct context {
     pub cx_u: context__bindgen_ty_1,
 }
 #[repr(C)]
-#[derive(Copy, Clone)]; 12usize ] , }#[test]
+#[derive(Copy, Clone)];
+#[test]
 fn bindgen_test_layout_context__bindgen_ty_1() {
     assert_eq!(
         ::std::mem::size_of::<context__bindgen_ty_1>(),
